@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        let marginMove = 0.6;
+        let totalMargin = 0;
+        let totalMarginVertical = 0;
+        let topMargin = 100;
+        let theLeftMargin = 0;
+
+        setInterval(function () {
+          for (let i = 0; i < 14; i++) {
+            if (totalMargin >= 1200) {
+              marginMove *= -1;
+              let theNewMargin = totalMargin + marginMove;
+              totalMarginVertical += topMargin;
+              $("#thieft").css("margin-left", `${theNewMargin}px`);
+              $("#thieft").css("margin-top", `${totalMarginVertical}px`);
+              totalMargin += marginMove;
+            } else if (totalMargin <= -50) {
+              marginMove *= -1;
+              let theNewMargin = totalMargin + marginMove;
+              totalMarginVertical += topMargin;
+              $("#thieft").css("margin-left", `${theNewMargin}px`);
+              $("#thieft").css("margin-top", `${totalMarginVertical}px`);
+              totalMargin += marginMove;
+            } else {
+              let theNewMargin = totalMargin + marginMove;
+              $("#thieft").css("margin-left", `${theNewMargin}px`);
+              totalMargin += marginMove;
+            }
+          }
+        }, 100);
+        $(document).on("mousemove", function (event) {
+          // Coordinates relative to the document
+          const mouseX = event.pageX;
+          let police = $("#police").css("margin-left", mouseX + "px");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <img
+      id="thieft"
+      src="./armed_guy.jpeg"
+      width="100px"
+      ,
+      height="100px"
+      alt="armed_guy"
+    />\
+    <br />
+    <div>
+      <img src="./bullet-fire.jpeg" alt="" width="50px" height="50px">
+      <img
+      style="position: absolute; bottom: 0px"
+      src="./armed_guy.jpeg"
+      alt=""
+      id="police"
+    />
+
+    </div>
+    
+  </body>
+</html>
