@@ -1,0 +1,17 @@
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.game-container {
+  width: 400px;
+}
+.game-container img {
+  width: 100%;
+}
+.game-description {
+  margin: 10px;
+  border: 2px solid brown;
+  color: brown;
+  padding: 20px;
+}

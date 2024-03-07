@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        $("img").click(function () {
+          $("img").attr("src", "images/room4.png");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="flex-container">
+      <div class="game-container">
+        <img src="images/room3.png" alt="" />
+      </div>
+      <div class="game-description">
+        <h3>Game Summary</h3>
+        <h5>Level : Easy</h5>
+        <h5>Bullets: 5</h5>
+      </div>
+    </div>
+  </body>
+</html>
