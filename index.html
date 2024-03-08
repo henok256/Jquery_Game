@@ -22,7 +22,7 @@
         let theLeftMargin = 0;
         let isFired = false;
         let bullet = $("#bullet");
-        let theft = $("#thieft");
+        let thief = $("#thief");
         let police = $("#police");
         let timeoutId1;
         let timeoutId2;
@@ -57,10 +57,10 @@
           timeoutId1 = setInterval(function () {
             if (isFired) {
               let x = $(bullet).css("bottom");
-              // let thieftXPosition=$("#thieft").css("")
+              // let thiefXPosition=$("#thief").css("")
               let y = parseInt(x);
 
-              let tPosition = $(theft).position();
+              let tPosition = $(thief).position();
               let bPosition = $(bullet).position();
               let pPosition = $(police).position();
 
@@ -76,16 +76,16 @@
               console.log(
                 document.documentElement.clientHeight,
                 bPosition.top,
-                $("#thieft").position().top,
+                $("#thief").position().top,
                 bPosition.left,
-                parseInt($(theft).css("margin-left"))
+                parseInt($(thief).css("margin-left"))
               );
               if (
-                Math.abs(bPosition.top - parseInt($(theft).css("margin-top"))) <
+                Math.abs(bPosition.top - parseInt($(thief).css("margin-top"))) <
                   50 &&
                 Math.abs(
                   parseInt($(bullet).css("margin-left")) -
-                    parseInt($(theft).css("margin-left"))
+                    parseInt($(thief).css("margin-left"))
                 ) < 100
               ) {
                 score++;
@@ -113,15 +113,15 @@
                 if (currentColumn >= losePoint) {
                   youLose();
                 }
-                $(theft).css("margin-left", `${theNewMargin}px`);
-                $(theft).css("margin-top", `${totalMarginVertical}px`);
+                $(thief).css("margin-left", `${theNewMargin}px`);
+                $(thief).css("margin-top", `${totalMarginVertical}px`);
                 totalMargin += marginMove;
               } else if (totalMargin <= 0) {
-                marginMove *= -1;
-                let theNewMargin = totalMargin + marginMove;
-                totalMarginVertical += topMargin;
-                $(theft).css("margin-left", `${theNewMargin}px`);
-                $(theft).css("margin-top", `${totalMarginVertical}px`);
+                marginMove *= -1; // to bring the thief back to the opposite direction
+                let theNewMargin = totalMargin + marginMove; //
+                totalMarginVertical += topMargin; //to bring down the thief one step down vertically after finishing the permitted horizontal move
+                $(thief).css("margin-left", `${theNewMargin}px`);
+                $(thief).css("margin-top", `${totalMarginVertical}px`);
 
                 currentColumn++;
 
@@ -131,7 +131,7 @@
                 totalMargin += marginMove;
               } else {
                 let theNewMargin = totalMargin + marginMove;
-                $("#thieft").css("margin-left", `${theNewMargin}px`);
+                $("#thief").css("margin-left", `${theNewMargin}px`);
                 totalMargin += marginMove;
               }
             }
@@ -147,16 +147,15 @@
             let police = $("#police").css("margin-left", mouseX + "px");
 
             if (!isFired) {
-              $(bullet).css("margin-left", mouseX + "px");
+              $(bullet).css("margin-left", mouseX + "px");  //this code bring the bullet back to the police's gun
             }
           }
         });
-        $(document).ready(function () {
+
           $(document).on("click", function (event) {
             if (event.pageX < pageWidth) {
               isFired = true;
             }
-          });
         });
       });
     </script>
@@ -170,7 +169,7 @@
       </div>
       <div class="game-container">
         <img
-          id="thieft"
+          id="thief"
           src="./images/ninja.png"
           width="100px"
           ,
