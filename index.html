@@ -4,139 +4,200 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
     <script>
       $(document).ready(function () {
-        let marginMove = 0.6;
-        let totalMargin = 0;
+        let score = 0;
+
+        let pageWidth = 900;
+        let marginMove = 0.5;
+        let totalMargin = 50;
         let totalMarginVertical = 0;
-        let topMargin = 100;
+        let topMargin = 50;
+        let losePoint = 10;
+        let winPoint = 5;
+        let currentColumn = 0;
         let theLeftMargin = 0;
         let isFired = false;
         let bullet = $("#bullet");
         let theft = $("#thieft");
         let police = $("#police");
-        let originalBulletPosition = "position: absolute; bottom: 150px;";
+        let timeoutId1;
+        let timeoutId2;
 
-        setInterval(function () {
-          if (isFired) {
-            let x = $(bullet).css("bottom");
-            // let thieftXPosition=$("#thieft").css("")
-            let y = parseInt(x);
+        $("#restart").click(restart);
 
-            let tPosition = $(theft).position();
-            let bPosition = $(bullet).position();
-            let pPosition = $(police).position();
+        startGame();
 
-            if (bPosition.top > 20) {
-              $(bullet).css("bottom", y + 20 + "px");
-            } else {
-              //$(bullet).position("top", pPosition.top + 20 + "px");
-              $(bullet).css("bottom", 150 + "px");
-              $(bullet).css("margin-left", $(police).css("margin-left"));
-              isFired = false;
-              //$(bullet).css(originalBulletPosition)
+        function restart() {
+          location.reload();
+        }
+        function youLose() {
+          $("#score").html("Game Over ");
+          clearTimeout(timeoutId1);
+          clearTimeout(timeoutId2);
+        }
+        function youWon() {
+          $("#score").html("You Won the Game!");
+          clearTimeout(timeoutId1);
+          clearTimeout(timeoutId2);
+        }
+
+        function startGame() {
+          marginMove = 1;
+          totalMargin = 50;
+          totalMarginVertical = 0;
+          topMargin = 100;
+          losePoint = 6;
+          currentColumn = 0;
+          theLeftMargin = 0;
+          isFired = false;
+          timeoutId1 = setInterval(function () {
+            if (isFired) {
+              let x = $(bullet).css("bottom");
+              // let thieftXPosition=$("#thieft").css("")
+              let y = parseInt(x);
+
+              let tPosition = $(theft).position();
+              let bPosition = $(bullet).position();
+              let pPosition = $(police).position();
+
+              if (bPosition.top > 20) {
+                $(bullet).css("bottom", y + 20 + "px");
+              } else {
+                //$(bullet).position("top", pPosition.top + 20 + "px");
+                $(bullet).css("bottom", 92 + "px");
+                $(bullet).css("left", 35 + "px");
+                $(bullet).css("margin-left", $(police).css("margin-left"));
+                isFired = false;
+              }
+              console.log(
+                document.documentElement.clientHeight,
+                bPosition.top,
+                $("#thieft").position().top,
+                bPosition.left,
+                parseInt($(theft).css("margin-left"))
+              );
+              if (
+                Math.abs(bPosition.top - parseInt($(theft).css("margin-top"))) <
+                  50 &&
+                Math.abs(
+                  parseInt($(bullet).css("margin-left")) -
+                    parseInt($(theft).css("margin-left"))
+                ) < 100
+              ) {
+                score++;
+                if (score === winPoint) {
+                  youWon();
+                } else {
+                  $("#score").html("Score : " + score);
+                  isFired = false;
+
+                  $(bullet).css("bottom", 92 + "px");
+                  $(bullet).css("left", 35 + "px");
+                  $(bullet).css("margin-left", $(police).css("margin-left"));
+                }
+              }
             }
-            console.log(
-              document.documentElement.clientHeight,
-              bPosition.top,
-              $("#thieft").position().top,
-              bPosition.left,
-              parseInt($(theft).css("margin-left"))
-            );
-            if (
-              Math.abs(bPosition.top - parseInt($(theft).css("margin-top"))) <
-                50 &&
-              Math.abs(
-                parseInt($(bullet).css("margin-left")) -
-                  parseInt($(theft).css("margin-left"))
-              ) < 200
-            ) {
-              isFired = false;
+          }, 50);
 
-              $(bullet).css("bottom", 150 + "px");
-              $(bullet).css("margin-left", $(police).css("margin-left"));
-            } else {
+          timeoutId2 = setInterval(function () {
+            for (let i = 0; i < 7; i++) {
+              if (totalMargin >= pageWidth) {
+                currentColumn++;
+                marginMove *= -1;
+                let theNewMargin = totalMargin + marginMove;
+                totalMarginVertical += topMargin;
+                if (currentColumn >= losePoint) {
+                  youLose();
+                }
+                $(theft).css("margin-left", `${theNewMargin}px`);
+                $(theft).css("margin-top", `${totalMarginVertical}px`);
+                totalMargin += marginMove;
+              } else if (totalMargin <= 0) {
+                marginMove *= -1;
+                let theNewMargin = totalMargin + marginMove;
+                totalMarginVertical += topMargin;
+                $(theft).css("margin-left", `${theNewMargin}px`);
+                $(theft).css("margin-top", `${totalMarginVertical}px`);
+
+                currentColumn++;
+
+                if (currentColumn >= losePoint) {
+                  youLose();
+                }
+                totalMargin += marginMove;
+              } else {
+                let theNewMargin = totalMargin + marginMove;
+                $("#thieft").css("margin-left", `${theNewMargin}px`);
+                totalMargin += marginMove;
+              }
             }
+          }, 50);
 
-            //console.log("hdhhdh" + x);
-          }
-        }, 100);
+          return timeoutId1, timeoutId2;
+        }
 
-        setInterval(function () {
-          for (let i = 0; i < 14; i++) {
-            if (totalMargin >= 1200) {
-              marginMove *= -1;
-              let theNewMargin = totalMargin + marginMove;
-              totalMarginVertical += topMargin;
-              $("#thieft").css("margin-left", `${theNewMargin}px`);
-              $("#thieft").css("margin-top", `${totalMarginVertical}px`);
-              totalMargin += marginMove;
-            } else if (totalMargin <= -50) {
-              marginMove *= -1;
-              let theNewMargin = totalMargin + marginMove;
-              totalMarginVertical += topMargin;
-              $("#thieft").css("margin-left", `${theNewMargin}px`);
-              $("#thieft").css("margin-top", `${totalMarginVertical}px`);
-              totalMargin += marginMove;
-            } else {
-              let theNewMargin = totalMargin + marginMove;
-              $("#thieft").css("margin-left", `${theNewMargin}px`);
-              totalMargin += marginMove;
-            }
-          }
-        }, 100);
         $(document).on("mousemove", function (event) {
           // Coordinates relative to the document
           const mouseX = event.pageX;
-          let police = $("#police").css("margin-left", mouseX + "px");
+          if (mouseX < pageWidth) {
+            let police = $("#police").css("margin-left", mouseX + "px");
 
-          if (!isFired) {
-            $("#bullet").css("margin-left", mouseX + 100 + "px");
+            if (!isFired) {
+              $(bullet).css("margin-left", mouseX + "px");
+            }
           }
         });
         $(document).ready(function () {
           $(document).on("click", function (event) {
-            isFired = true;
+            if (event.pageX < pageWidth) {
+              isFired = true;
+            }
           });
         });
       });
     </script>
-    <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-      }
-    </style>
   </head>
   <body>
-    <img
-      id="thieft"
-      src="./armed_guy.jpeg"
-      width="100px"
-      ,
-      height="100px"
-      alt="armed_guy"
-    />
-    <br />
-    <div class="container">
-      <img
-        src="./bullet-fire.jpeg"
-        style="position: absolute; bottom: 150px"
-        id="bullet"
-        alt=""
-        width="50px"
-        height="50px"
-      />
-      <img
-        style="position: absolute; bottom: 0px"
-        src="/images/police_shooting.png"
-        alt=""
-        id="police"
-        width="100px"
-        height="100px"
-      />
+    <div class="flex-container">
+      <div class="score-container">
+        <h1>Game Details</h1>
+        <h4 id="score">Score : 0</h4>
+        <button id="restart">Restart</button>
+      </div>
+      <div class="game-container">
+        <img
+          id="thieft"
+          src="./images/ninja.png"
+          width="100px"
+          ,
+          height="100px"
+          alt="armed_guy"
+        />
+        <br />
+        <div class="container">
+          <img
+            src="./bullet-fire.png"
+            style="position: absolute; bottom: 92px; left: 35px"
+            id="bullet"
+            alt=""
+            width="50px"
+            height="50px"
+          />
+          <div class="separator"></div>
+          <img
+            style="position: absolute; bottom: 0px"
+            src="/images/police_shooting.png"
+            alt=""
+            id="police"
+            width="100px"
+            height="100px"
+          />
+        </div>
+      </div>
     </div>
   </body>
 </html>

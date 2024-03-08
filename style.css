@@ -1,17 +1,33 @@
-.flex-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+body {
+  background-color: greenyellow;
 }
 .game-container {
-  width: 400px;
+  /* background-image: url("images/room2.png"); */
+  /* background-size: contain; */
+  background-color: skyblue;
+  max-width: 1000px;
+  min-height: 1000px;
 }
-.game-container img {
-  width: 100%;
+.score-container {
+  /* background-image: url("images/room2.png"); */
+  /* background-size: contain; */
+  position: absolute;
+  width: 500px;
+  right: 0px;
+  top: 0px;
+  background-color: greenyellow;
+  height: 100%;
+
+  float: right;
 }
-.game-description {
-  margin: 10px;
-  border: 2px solid brown;
-  color: brown;
-  padding: 20px;
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.separator {
+  height: 1px;
+  width: 1000px;
+  background-color: blue;
+  position: absolute;
+  bottom: 200px;
 }
